@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>형태의 기록 — 디자인 아카이브</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500&family=Noto+Serif+KR:wght@300;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff;--fg:#000;--mute:rgba(0,0,0,.52);--line:rgba(0,0,0,.14);--chip:rgba(0,0,0,.06);
+--sans:'Noto Sans KR',system-ui,sans-serif;--serif:'Noto Serif KR',Georgia,serif;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#000;--fg:#fff;--mute:rgba(255,255,255,.55);--line:rgba(255,255,255,.18);--chip:rgba(255,255,255,.09)}}
+:root[data-theme="dark"]{--bg:#000;--fg:#fff;--mute:rgba(255,255,255,.55);--line:rgba(255,255,255,.18);--chip:rgba(255,255,255,.09)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box;margin:0}
+body{background:var(--bg);color:var(--fg);font:300 14px/1.75 var(--sans);transition:background .3s,color .3s;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;padding:0}
+button:focus-visible,input:focus-visible{outline:1px solid var(--fg);outline-offset:3px}
+header{display:flex;justify-content:space-between;align-items:center;padding:16px 28px;border-bottom:1px solid var(--line)}
+header b{font:500 17px var(--serif);letter-spacing:.02em}
+header span{color:var(--mute);margin-left:14px;font-size:12px}
+.tg{border:1px solid var(--line);border-radius:99px;padding:4px 14px;font-size:12px}
+main{display:grid;grid-template-columns:270px minmax(0,1fr) 340px;height:calc(100vh - 58px);height:calc(100dvh - 58px)}
+aside,section{overflow:auto}
+#idx{border-right:1px solid var(--line);padding:24px 28px}
+#info{border-left:1px solid var(--line);padding:28px}
+.cats{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:22px}
+.cats button{padding:3px 12px;border-radius:99px;font-size:12px;border:1px solid var(--line);color:var(--mute)}
+.cats button.on{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.it{display:block;width:100%;text-align:left;padding:13px 0;border-top:1px solid var(--line);color:var(--mute);transition:color .2s}
+.it:hover,.it.on{color:var(--fg)}
+.it h3{font:500 15px/1.4 var(--serif)}.it small{font-size:12px}
+#stage{background:radial-gradient(circle at 50% 35%,color-mix(in srgb,var(--fg) 12%,var(--bg)),color-mix(in srgb,var(--fg) 24%,var(--bg)));position:relative;min-height:420px;touch-action:none;cursor:grab;overflow:hidden}
+#stage:active{cursor:grabbing}
+canvas{display:block;width:100%;height:100%}
+.ttl{position:absolute;left:32px;top:26px;pointer-events:none;max-width:70%}
+.ttl h1{font:300 clamp(30px,4.6vw,64px)/1.08 var(--serif);letter-spacing:-.02em}
+.ttl p{color:var(--mute);margin-top:10px}
+.ctl{position:absolute;left:32px;right:32px;bottom:24px;display:flex;align-items:center;gap:22px;font-size:12px}
+.ctl label{display:flex;align-items:center;gap:12px;flex:1;max-width:420px}
+.ctl output{width:34px;text-align:right}
+input[type=range]{flex:1;accent-color:var(--fg);height:2px}
+.ctl button{border:1px solid var(--line);border-radius:99px;padding:3px 13px}
+.ctl button.on{background:var(--fg);color:var(--bg)}
+.hint{position:absolute;right:30px;bottom:26px;color:var(--mute);font-size:12px;pointer-events:none}
+#info h2{font:500 22px/1.3 var(--serif)}
+.meta{color:var(--mute);margin:4px 0 18px;font-size:13px}
+#info h4{font:500 12px var(--sans);color:var(--mute);margin:24px 0 8px}
+#info p{max-width:44ch}
+.an{border-top:1px solid var(--line);padding:11px 0}.an b{display:block;font-weight:500;font-size:13px}
+.pl button{display:flex;justify-content:space-between;width:100%;padding:8px 0;border-top:1px solid var(--line);text-align:left;color:var(--mute)}
+.pl button:hover{color:var(--fg)}
+.note{margin-top:28px;font-size:11px;color:var(--mute);line-height:1.6}
+@media (max-width:960px){
+main{display:block;height:auto}
+#stage{height:68vh;min-height:360px}
+#idx,#info{border:0;border-top:1px solid var(--line);padding:22px 20px}
+.ttl{left:20px}.ctl{left:20px;right:20px;flex-wrap:wrap;gap:10px}.hint{display:none}
+header{padding:14px 20px}header span{display:none}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<header><div><b>형태의 기록</b><span>세계 디자이너와 오브제 아카이브</span></div><button class="tg" id="tg">다크 모드</button></header>
+<main>
+<aside id="idx"><div class="cats" id="cats"></div><div id="list"></div></aside>
+<section id="stage">
+<div class="ttl"><h1 id="nm"></h1><p id="sub"></p></div>
+<div class="ctl">
+<label>분해<input type="range" id="ex" min="0" max="100" value="0" aria-label="분해 정도"><output id="exv">0%</output></label>
+<button id="au" class="on">자동 회전</button><button id="rs">초기화</button>
+</div>
+<div class="hint">드래그로 회전 · 스크롤로 확대</div>
+</section>
+<aside id="info"></aside>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+const D=[
+{id:'s7',cat:'가구',n:'Series 7 Chair',des:'Arne Jacobsen',c:'덴마크',y:1955,ty:.75,r:4.6,
+intro:'단일 성형 합판 셸과 가는 강관 다리만으로 이루어진 의자. 한 번에 찍어낸 곡면이 앉는 자리와 등받이를 동시에 만듭니다.',
+an:[['형태','좌판에서 등받이로 이어지는 연속 곡면. 허리 부분을 잘록하게 줄여 가볍고 유연한 인상을 줍니다.'],['소재','성형 합판 셸에 크롬 강관 다리. 얇은 합판의 탄성이 앉았을 때의 쿠션감이 됩니다.'],['의의','쌓을 수 있고 대량 생산이 가능해, 이후 20세기 의자 디자인의 기준점이 되었습니다.']],
+parts:['합판 셸','강관 다리'],
+build(){const w=mat('#e8e6e1'),k=mat('#bfc3c6',{metalness:.5,roughness:.35});
+const s=new THREE.Group();s.add(M(new THREE.BoxGeometry(1,.07,.95),w,0,.9,0));const b=M(new THREE.BoxGeometry(1,.62,.06),w,0,1.22,-.5);b.rotation.x=-.2;s.add(b);
+const l=new THREE.Group();[[-.4,-.38],[.4,-.38],[-.4,.38],[.4,.38]].forEach(p=>l.add(M(new THREE.CylinderGeometry(.022,.022,.88,12),k,p[0],.44,p[1])));
+return[{o:s,d:[0,1.1,0]},{o:l,d:[0,0,0]}]}},
+{id:'in',cat:'가구',n:'Coffee Table IN-50',des:'Isamu Noguchi',c:'미국',y:1944,ty:.35,r:4.4,
+intro:'서로 맞물리는 두 개의 나무 다리 위에 유리 상판을 올린 테이블. 조각가의 시선으로 가구를 풀어냈습니다.',
+an:[['형태','두 개의 동일한 곡선 다리가 서로 기대어 하중을 나눕니다. 접착제나 나사 없이 형태 자체가 구조가 됩니다.'],['소재','원목 다리와 두꺼운 유리. 무거운 나무와 투명한 유리의 대비가 핵심입니다.'],['의의','가구와 조각의 경계를 지운 대표작으로, 지금도 생산됩니다.']],
+parts:['유리 상판','나무 다리 A','나무 다리 B'],
+build(){const g=mat('#d6dcdc',{transparent:true,opacity:.45,roughness:.1}),w=mat('#a87c55');
+const a=M(new THREE.BoxGeometry(.16,.5,.9),w,-.3,.25,0);a.rotation.z=.32;const b=M(new THREE.BoxGeometry(.16,.5,.9),w,.3,.25,0);b.rotation.z=-.32;
+return[{o:M(new THREE.BoxGeometry(1.7,.05,1),g,0,.52,0),d:[0,1.1,0]},{o:a,d:[-1,.2,0]},{o:b,d:[1,.2,0]}]}},
+{id:'bf',cat:'가구',n:'Butterfly Stool',des:'Sori Yanagi',c:'일본',y:1954,ty:.4,r:3.8,
+intro:'휘어진 합판 두 장을 황동 로드 하나로 잇는 스툴. 나비가 날개를 편 듯한 실루엣에서 이름이 왔습니다.',
+an:[['형태','대칭으로 마주한 두 개의 아치. 앉는 면과 다리가 하나의 곡선으로 연결됩니다.'],['소재','성형 합판과 황동 로드. 최소한의 부품으로 구조를 완성합니다.'],['의의','일본 공업 디자인의 출발점으로, 전통 공예와 현대 생산 방식을 이었습니다.']],
+parts:['합판 날개 L','합판 날개 R','황동 로드'],
+build(){const w=mat('#c49a6c',{side:THREE.DoubleSide}),br=mat('#b5a26a',{metalness:.5,roughness:.35});
+const mk=s=>{const G=new THREE.Group(),ge=new THREE.CylinderGeometry(.5,.5,.55,28,1,true,.05,Math.PI-.1);ge.rotateZ(Math.PI/2);const m=M(ge,w,0,0,0);m.scale.y=.75;G.add(m);G.position.set(s*.28,.03,0);G.rotation.z=-s*.14;return G};
+const r=M(new THREE.CylinderGeometry(.025,.025,1.3,12),br,0,.12,0);r.rotation.z=Math.PI/2;
+return[{o:mk(-1),d:[-1,.3,0]},{o:mk(1),d:[1,.3,0]},{o:r,d:[0,-.2,0]}]}},
+{id:'fp',cat:'조명',n:'Flowerpot VP1',des:'Verner Panton',c:'덴마크',y:1968,ty:.95,r:4.8,
+intro:'크기가 다른 두 개의 반구가 서로 마주보며 빛을 퍼뜨리는 펜던트 조명. 60년대 팝 문화의 둥근 낙관이 담겨 있습니다.',
+an:[['형태','큰 반구는 빛을 위로 감싸고, 작은 반구는 아래로 받칩니다. 두 곡면 사이 틈으로 빛이 새어 나옵니다.'],['소재','도장한 금속 갓. 단색의 매끈한 표면이 형태를 또렷하게 보여줍니다.'],['의의','기하학적 형태와 색을 일상의 조명으로 가져온 팝 디자인의 상징입니다.']],
+parts:['상부 반구','하부 반구','전구','캡과 줄'],
+build(){const w=mat('#f1f1ef',{side:THREE.DoubleSide,roughness:.4});
+const t=M(new THREE.SphereGeometry(.62,40,20,0,Math.PI*2,0,Math.PI/2),w,0,.85,0),b=M(new THREE.SphereGeometry(.4,40,20,0,Math.PI*2,Math.PI/2,Math.PI/2),w,0,.72,0);
+const bu=M(new THREE.SphereGeometry(.12,20,16),mat('#fff',{emissive:'#fff',emissiveIntensity:.8}),0,.8,0);
+const c=new THREE.Group();c.add(M(new THREE.CylinderGeometry(.06,.06,.1,16),mat('#222'),0,1.48,0),M(new THREE.CylinderGeometry(.01,.01,.7,6),mat('#222'),0,1.88,0));
+return[{o:t,d:[0,.9,0]},{o:b,d:[0,-.8,0]},{o:bu,d:[0,-.1,0]},{o:c,d:[0,1.4,0]}]}},
+{id:'t3',cat:'제품',n:'T3 Pocket Radio',des:'Dieter Rams',c:'독일',y:1958,ty:.45,r:4.2,
+intro:'스피커 그릴과 두 개의 다이얼만 남긴 휴대용 라디오. 기능이 곧 모양이라는 브라운 디자인의 원칙을 보여줍니다.',
+an:[['형태','직사각 본체, 균일한 그릴 슬릿, 원형 다이얼. 모든 요소가 격자에 맞춰 놓입니다.'],['소재','도장 플라스틱 본체와 알루미늄 그릴. 손에 닿는 다이얼은 돌출시켜 조작 위치를 알려줍니다.'],['의의','“적을수록 좋다”는 Rams의 디자인 철학이 가장 명확하게 드러난 제품입니다.']],
+parts:['본체','그릴','다이얼','후면 커버'],
+build(){const wh=mat('#ecebe7'),dk=mat('#111'),gr=mat('#9a9c9e');
+const grl=new THREE.Group();for(let i=0;i<9;i++)grl.add(M(new THREE.BoxGeometry(.72,.03,.025),dk,-.25,.2+i*.065,.215));
+const dl=new THREE.Group();[[.5,.56,.13],[.5,.28,.09]].forEach(v=>{const c=M(new THREE.CylinderGeometry(v[2],v[2],.07,28),gr,v[0],v[1],.23);c.rotation.x=Math.PI/2;dl.add(c)});
+return[{o:M(new THREE.BoxGeometry(1.4,.8,.4),wh,0,.4,0),d:[0,0,0]},{o:grl,d:[0,0,.9]},{o:dl,d:[.2,0,1.5]},{o:M(new THREE.BoxGeometry(1.4,.8,.04),gr,0,.4,-.22),d:[0,0,-1]}]}},
+{id:'sv',cat:'리빙',n:'Savoy Vase',des:'Alvar Aalto',c:'핀란드',y:1936,ty:.65,r:4,
+intro:'핀란드 호수의 해안선에서 영감을 얻은 유리 화병. 직선이 하나도 없는 물결 같은 윤곽을 가졌습니다.',
+an:[['형태','한 줄의 유기적 곡선이 입구와 몸통을 만듭니다. 꽃 없이 놓아도 하나의 조각으로 읽힙니다.'],['소재','불어서 만든 유리. 두께가 일정하지 않아 빛이 곡선을 따라 흐릅니다.'],['의의','북유럽 모던의 부드러운 감각을 일상 오브제로 정착시킨 작품입니다.']],
+parts:['유리 본체','물','꽃 줄기'],
+build(){const f=t=>.28+.14*Math.sin(t*Math.PI*2.4+.6)+.1*t,P=(n,k)=>{const a=[];for(let i=0;i<=n;i++){const t=i/40;a.push(new THREE.Vector2(f(t)*k,t*1.1))}return a};
+const gl=mat('#e6ecec',{transparent:true,opacity:.5,roughness:.1,side:THREE.DoubleSide}),wt=mat('#9fb0b3',{transparent:true,opacity:.6,side:THREE.DoubleSide}),st=mat('#555');
+const s=new THREE.Group();[[-.05,.1],[.08,-.12],[0,0]].forEach((v,i)=>{const c=M(new THREE.CylinderGeometry(.012,.012,1,6),st,v[0],.95,v[1]);c.rotation.z=v[0]*.9;s.add(c,M(new THREE.SphereGeometry(.09,16,12),mat('#fff'),v[0]*1.5,1.45+i*.06,v[1]))});
+return[{o:M(new THREE.LatheGeometry(P(40,1),40),gl),d:[0,0,0]},{o:M(new THREE.LatheGeometry(P(22,.9),40),wt),d:[0,.8,0]},{o:s,d:[0,1.5,0]}]}},
+{id:'ph',cat:'조명',n:'PH 5',des:'Poul Henningsen',c:'덴마크',y:1958,ty:.95,r:4.8,
+intro:'겹겹이 포개진 갓으로 전구가 눈에 직접 보이지 않게 하면서 빛을 부드럽게 퍼뜨리는 펜던트 조명. 전 세계 식탁 위에서 가장 많이 볼 수 있는 조명 중 하나입니다.',
+an:[['형태','크기가 다른 세 개의 갓이 겹쳐 빛을 아래로, 또 옆으로 반사합니다.'],['소재','도장한 알루미늄 갓. 안쪽 면의 색이 빛의 온도를 결정합니다.'],['의의','눈부심 없는 조명이라는 기능에서 출발해 형태까지 완성한 사례입니다.']],
+parts:['상단 갓','중간 갓','하단 갓','전구'],
+build(){const w=mat('#e4e2dc',{side:THREE.DoubleSide,roughness:.28,metalness:.2}),dm=(r,h)=>{const a=[];for(let i=0;i<=16;i++){const t=i/16*Math.PI/2;a.push(new THREE.Vector2(Math.max(.001,r*Math.sin(t)),-h*(1-Math.cos(t))))}return new THREE.LatheGeometry(a,48)};
+return[{o:M(dm(.4,.28),w,0,1.45,0),d:[0,1,0]},{o:M(dm(.62,.34),w,0,1.2,0),d:[0,.55,0]},{o:M(dm(.88,.4),w,0,.92,0),d:[0,0,0]},{o:M(new THREE.SphereGeometry(.14,24,16),mat('#fff',{emissive:'#fff',emissiveIntensity:.9}),0,1,0),d:[0,-.5,0]}]}},
+{id:'dsw',cat:'가구',n:'Eames Plastic Side Chair',des:'Charles & Ray Eames',c:'미국',y:1950,ty:.65,r:4.6,
+intro:'몸을 감싸는 하나의 플라스틱 셸에 나무 다리를 끼운 의자. 색과 다리를 골라 조합하는 방식으로 가장 널리 알려진 의자 중 하나가 되었습니다.',
+an:[['형태','엉덩이와 등을 따라 휘어진 단일 셸. 별도의 쿠션 없이도 몸에 맞는 곡면을 만듭니다.'],['소재','폴리프로필렌 셸, 너도밤나무 다리, 강선 프레임. 서로 다른 재료를 최소한으로 연결합니다.'],['의의','플라스틱 대량 생산 의자의 시작으로, 이후 수많은 의자의 원형이 되었습니다.']],
+parts:['플라스틱 셸','와이어 프레임','나무 다리'],
+build(){const p=mat('#d6d4ce',{roughness:.32,side:THREE.DoubleSide}),wd=mat('#c9a06a',{roughness:.5}),mt=mat('#c3c6c8',{metalness:.9,roughness:.3});
+const sh=new THREE.Group();sh.add(M(new THREE.BoxGeometry(1,.06,.9),p,0,.88,.05),M(new THREE.CylinderGeometry(.62,.62,.5,32,1,true,Math.PI-1.1,2.2),p,0,1.15,.18));
+const wl=new THREE.Group();[[-1,-1],[1,-1],[-1,1],[1,1]].forEach(v=>{const l=M(new THREE.CylinderGeometry(.018,.026,.8,12),wd,v[0]*.42,.4,v[1]*.34);l.rotation.z=-v[0]*.1;l.rotation.x=v[1]*.1;wl.add(l)});
+const wr=new THREE.Group();[-1,1].forEach(s=>{const a=M(new THREE.CylinderGeometry(.008,.008,.84,6),mt,0,.5,s*.3);a.rotation.z=Math.PI/2;const b=M(new THREE.CylinderGeometry(.008,.008,.68,6),mt,s*.38,.5,0);b.rotation.x=Math.PI/2;wr.add(a,b)});
+return[{o:sh,d:[0,1.2,0]},{o:wr,d:[0,.5,0]},{o:wl,d:[0,0,0]}]}},
+{id:'mk',cat:'리빙',n:'Moka Express',des:'Alfonso Bialetti',c:'이탈리아',y:1933,ty:.65,r:3.8,
+intro:'아래 보일러의 증기 압력으로 커피를 밀어 올리는 에스프레소 포트. 팔각형 알루미늄 몸체는 이탈리아 가정의 상징이 되었습니다.',
+an:[['형태','팔각 단면은 열을 고르게 받으면서 잡기 편하고, 시각적으로 하나의 기호가 됩니다.'],['소재','주조 알루미늄 몸체와 내열 손잡이. 가볍고 열전도가 좋습니다.'],['의의','가정에서 에스프레소 문화를 퍼뜨린 가장 대중적인 커피 도구입니다.']],
+parts:['하부 보일러','상부 포트','뚜껑','손잡이'],
+build(){const al=mat('#b4b8bb',{metalness:.95,roughness:.3}),bk=mat('#111',{roughness:.45});
+const up=M(new THREE.CylinderGeometry(.42,.3,.62,8),al,0,.81,0),lid=new THREE.Group();lid.add(M(new THREE.CylinderGeometry(.42,.42,.04,8),al,0,1.14,0),M(new THREE.SphereGeometry(.07,16,12),bk,0,1.2,0));
+const h=new THREE.Group();h.add(M(new THREE.BoxGeometry(.09,.5,.2),bk,.55,.85,0),M(new THREE.BoxGeometry(.18,.06,.2),bk,.45,1.07,0),M(new THREE.BoxGeometry(.18,.06,.2),bk,.45,.63,0));
+return[{o:M(new THREE.CylinderGeometry(.34,.4,.5,8),al,0,.25,0),d:[0,0,0]},{o:up,d:[0,.5,0]},{o:lid,d:[0,1.1,0]},{o:h,d:[.8,.5,0]}]}},
+{id:'ch24',cat:'가구',n:'Wishbone Chair CH24',des:'Hans J. Wegner',c:'덴마크',y:1949,ty:.6,r:4.4,
+intro:'Y자 모양의 등받이와 종이끈을 엮은 좌판을 가진 의자. 중국 명대 의자에서 영감을 받아 만들어졌습니다.',
+an:[['형태','등받이 후프가 팔걸이를 겸하고, 뒤쪽 두 다리가 그대로 등받이 기둥이 됩니다.'],['소재','너도밤나무나 오크 원목과 종이끈. 손으로 직접 엮는 좌판은 약 120m의 끈이 들어갑니다.'],['의의','공예와 산업 생산을 절충한 덴마크 모던 가구의 대표작입니다.']],
+parts:['등받이 후프','종이끈 좌판','다리'],
+build(){const w=mat('#a87c55',{roughness:.5}),c=mat('#c9b085',{roughness:.95});
+const hp=M(new THREE.TorusGeometry(.43,.03,10,32,Math.PI),w,0,1.05,.08);hp.rotation.x=-Math.PI/2;
+const lg=new THREE.Group();[-1,1].forEach(s=>{lg.add(M(new THREE.CylinderGeometry(.026,.03,1.05,12),w,s*.43,.525,.08),M(new THREE.CylinderGeometry(.022,.03,.46,12),w,s*.4,.23,.38))});
+return[{o:hp,d:[0,1.1,0]},{o:M(new THREE.BoxGeometry(.92,.05,.8),c,0,.47,.05),d:[0,.55,0]},{o:lg,d:[0,0,0]}]}}
+];
+const BR={s7:'Fritz Hansen',in:'Herman Miller · Vitra',bf:'Tendo Mokko · Vitra',fp:'Louis Poulsen',t3:'Braun',sv:'Iittala',ph:'Louis Poulsen',dsw:'Vitra · Herman Miller',mk:'Bialetti',ch24:'Carl Hansen & Søn'};
+function mat(c,o){return new THREE.MeshStandardMaterial(Object.assign({color:c,roughness:.6,metalness:0},o||{}))}
+function M(g,m,x,y,z){const o=new THREE.Mesh(g,m);o.position.set(x||0,y||0,z||0);return o}
+const $=id=>document.getElementById(id),st=$('stage');
+let cat='전체',cur=null,parts=[],az=.7,el=.28,rad=4.5,ty=.6,auto=true,drag=false,ex=0,exT=0,hl=-1;
+const R=new THREE.WebGLRenderer({antialias:true,alpha:true});R.setPixelRatio(Math.min(devicePixelRatio,2));R.shadowMap.enabled=true;R.toneMapping=THREE.ACESFilmicToneMapping;R.toneMappingExposure=.8;st.insertBefore(R.domElement,st.firstChild);
+const S=new THREE.Scene(),C=new THREE.PerspectiveCamera(32,1,.1,50);
+S.add(new THREE.HemisphereLight(0xffffff,0x555555,.25));
+const L=new THREE.DirectionalLight(0xffffff,.8);L.position.set(3,5,3);L.castShadow=true;L.shadow.mapSize.set(1024,1024);S.add(L);
+const fl=new THREE.Mesh(new THREE.PlaneGeometry(30,30),new THREE.ShadowMaterial({opacity:.32}));fl.rotation.x=-Math.PI/2;fl.receiveShadow=true;S.add(fl);
+{const e=new THREE.Scene();e.background=new THREE.Color(0x2a2a2a);[[0,6,0,8,.3,8,5],[-6,2,2,.3,5,6,3],[6,1,-3,.3,4,5,2.5],[0,2,-6,8,4,.3,1.5]].forEach(v=>{const m=new THREE.Mesh(new THREE.BoxGeometry(v[3],v[4],v[5]),new THREE.MeshBasicMaterial({color:new THREE.Color(v[6],v[6],v[6])}));m.position.set(v[0],v[1],v[2]);e.add(m)});S.environment=new THREE.PMREMGenerator(R).fromScene(e,.04).texture}
+let grp=null;
+function size(){const w=st.clientWidth,h=st.clientHeight;R.setSize(w,h);C.aspect=w/h;C.updateProjectionMatrix()}
+new ResizeObserver(size).observe(st);
+function load(p){cur=p;if(grp)S.remove(grp);grp=new THREE.Group();
+parts=p.build().map(x=>{x.p0=x.o.position.clone();x.o.traverse(m=>{if(m.isMesh){m.castShadow=true;if(m.material.emissive)m.userData.e=m.material.emissive.getHex()}});grp.add(x.o);return x});
+S.add(grp);ty=p.ty;rad=p.r;exT=0;$('ex').value=0;
+$('nm').textContent=p.n;$('sub').textContent=p.des+' · '+BR[p.id]+' '+p.y;
+$('info').innerHTML='<h2>'+p.des+'</h2><div class="meta">'+BR[p.id]+' · '+p.c+' · '+p.cat+' · '+p.y+'</div><p>'+p.intro+'</p><h4>디자인 분석</h4>'+p.an.map(a=>'<div class="an"><b>'+a[0]+'</b>'+a[1]+'</div>').join('')+'<h4>구성 부품 — 분해하면 보입니다</h4><div class="pl">'+p.parts.map((n,i)=>'<button data-i="'+i+'"><span>'+n+'</span></button>').join('')+'</div><p class="note">3D 모델은 형태를 이해하기 위한 단순화된 가상 구조이며 실제 설계 데이터와 다릅니다.</p>';
+document.querySelectorAll('.pl button').forEach(b=>{const i=+b.dataset.i;b.onmouseenter=b.onfocus=()=>mark(i);b.onmouseleave=b.onblur=()=>mark(-1)});
+document.querySelectorAll('.it').forEach(b=>b.classList.toggle('on',b.dataset.id===p.id))}
+function mark(i){hl=i;parts.forEach((x,j)=>x.o.traverse(m=>{if(m.isMesh&&m.material.emissive)m.material.emissive.setHex(j===i?0x888888:(m.userData.e||0))}))}
+function list(){const cs=['전체',...new Set(D.map(d=>d.cat))];$('cats').innerHTML=cs.map(c=>'<button class="'+(c===cat?'on':'')+'">'+c+'</button>').join('');
+[...$('cats').children].forEach((b,i)=>b.onclick=()=>{cat=cs[i];list()});
+$('list').innerHTML=D.filter(d=>cat==='전체'||d.cat===cat).map(d=>'<button class="it'+(cur&&cur.id===d.id?' on':'')+'" data-id="'+d.id+'"><h3>'+d.n+'</h3><small>'+d.des+' · '+d.y+'</small></button>').join('');
+document.querySelectorAll('.it').forEach(b=>b.onclick=()=>load(D.find(d=>d.id===b.dataset.id)))}
+let lx,ly;st.onpointerdown=e=>{if(e.target.closest('.ctl'))return;drag=true;lx=e.clientX;ly=e.clientY;st.setPointerCapture(e.pointerId)};
+st.onpointermove=e=>{if(!drag)return;az-=(e.clientX-lx)*.008;el=Math.max(-.1,Math.min(1.3,el+(e.clientY-ly)*.006));lx=e.clientX;ly=e.clientY};
+st.onpointerup=st.onpointercancel=()=>drag=false;
+st.addEventListener('wheel',e=>{e.preventDefault();rad=Math.max(2,Math.min(9,rad+e.deltaY*.004))},{passive:false});
+$('ex').oninput=e=>{exT=e.target.value/100};
+$('au').onclick=e=>{auto=!auto;e.target.classList.toggle('on',auto)};
+$('rs').onclick=()=>{az=.7;el=.28;exT=0;$('ex').value=0;rad=cur.r};
+$('tg').onclick=()=>{const dk=getComputedStyle(document.documentElement).getPropertyValue('--bg').trim()==='#000';const v=dk?'light':'dark';document.documentElement.dataset.theme=v;$('tg').textContent=dk?'다크 모드':'라이트 모드';try{localStorage.setItem('fa-theme',v)}catch(e){}};
+try{const v=localStorage.getItem('fa-theme');if(v){document.documentElement.dataset.theme=v;$('tg').textContent=v==='dark'?'라이트 모드':'다크 모드'}else if(matchMedia('(prefers-color-scheme:dark)').matches)$('tg').textContent='라이트 모드'}catch(e){}
+function tick(){requestAnimationFrame(tick);if(auto&&!drag)az+=.004;ex+=(exT-ex)*.1;$('exv').textContent=Math.round(ex*100)+'%';
+parts.forEach(x=>x.o.position.set(x.p0.x+x.d[0]*ex,x.p0.y+x.d[1]*ex,x.p0.z+x.d[2]*ex));
+C.position.set(Math.sin(az)*Math.cos(el)*rad,ty+Math.sin(el)*rad,Math.cos(az)*Math.cos(el)*rad);C.lookAt(0,ty+(ex*.2),0);R.render(S,C)}
+list();load(D[0]);list();size();tick();
+</script>
+</body>
+</html>
